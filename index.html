@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Angular Sample</title>
+    <style>
+      body {font-family: sans-serif; font-size:10pt;}
+      table {border-collapse: collapse}
+      th,td {border:1px solid lightgray; text-align: center; width:120px}
+      table input {width:80px; text-align:center}
+    </style>
+  </head>
+
+  <body>
+    <h1>Relevès de notes</h1>
+    <div ng-app="myApp">
+      <div ng-controller="elevePanels">
+
+        <fieldset>
+          <legend>Nouvel éléve</legend>
+          <input type="text" ng-model="newPrenom" placeholder="Prénom" />
+          <input type="text" ng-model="newNom"    placeholder="Nom" />
+          <input type="button" ng-click="eleveCreate(newPrenom, newNom)" value="Ajouter">
+        </fieldset>
+
+        <fieldset>
+          <legend>Tableau de notes</legend>
+          <table>
+          <tr>
+            <th>Eleves / Matieres</th>
+            <th ng-repeat="m in ::matiereAry">{{m}}</th> <!-- One Time Binding ! -->
+            <th>Moyenne</th>
+            <th>Action</th>
+          </tr>
+          <tr ng-repeat="(index, eleve) in eleveAry">
+            <th>{{eleve.prenom}} {{eleve.nom}}</th>
+            <td ng-repeat="em in matiereAry"><input type="number" min="0" ng-model="eleve.results[em]"></td>
+            <th>{{eleveMoy(eleve)}}</th>
+            <th><button type="button" ng-click="eleveRemove(index)">Supp.</button></th>
+          </tr>
+          <tr>
+            <th>Moyennes</th>
+            <th ng-repeat="m in ::matiereAry">{{matiereMoy(m)}}</th>
+            <th colspan="2">&nbsp;</th>
+          </tr>
+          </table>
+        </fieldset>
+        <hr />
+        <button type="button" ng-click="eleveSave()">Sauvegarder</button>
+        <button type="button" ng-click="eleveLoad()">Charger</button>
+      </div>
+    </div>
+    <script src="node_modules/angular/angular.min.js"></script>
+    <script>
+      // Voici comment étendre ses strings sans choquer personne.
+      String.prototype.UCFirst = function() {
+          return this.charAt(0).toUpperCase() + this.slice(1);
+      }
+    </script>
+    <script src="reveleNote.js"></script>
+  </body>
+</html>
